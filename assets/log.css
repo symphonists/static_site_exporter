@@ -1,0 +1,36 @@
+@import url("../../../symphony/assets/basic.css");
+
+body, table{
+	margin: 40px auto;
+	text-align: center;
+}
+
+thead {
+	color: #fff;
+	font-size: 11px;
+	background: #65563d;
+	text-align: left;
+}
+
+th {
+	padding: 5px 10px;
+	text-align: center;
+}
+
+tr.error{
+	background-color: #F99;
+}
+
+tr.missing{
+	background-color: #FF9;
+}
+
+td {
+	padding: 14px 7px;
+	border-bottom: 1px solid #d4d4d4;
+	text-align: left;
+}
+
+td.render-time, td.status{
+	text-align: center;	
+}
