@@ -26,10 +26,11 @@ When complete, click the "Generate Static Build" button which compiles this inde
 
 There are several preferences edited via the _System > Preferences_ page:
 
-* `Index File Name` is the name of the HTML file created for each Symphony page (defaults to `index.html`)
-* `Export Location` is the full disk path of where to save exported Zip archives (defaults to `manifest/tmp`)
-* `Force Include` lets you specify a list of additional files and/or folders to be included in the Zip
-* `Include 404 pages in export archive` does what it says on the tin
+- `Index File Name` is the name of the HTML file created for each Symphony page (defaults to `index.html`)
+- `Export Location` is the full disk path of where to save exported Zip archives (defaults to `manifest/tmp`) 
+	- Example: if your custom folder is located at `/workspace/tmp`, you need to enter… `workspace/tmp` (it is relative to the SITE ROOT)
+- `Force Include` lets you specify a list of additional files and/or folders to be included in the Zip
+- `Include 404 pages in export archive` does what it says on the tin
 
 Additionally you can set up global string replacements in the `lib/inc.string_replace_pairs.php` file. This is an array of pairs in the form:
 
