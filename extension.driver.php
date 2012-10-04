@@ -123,7 +123,12 @@
 		public function exportDestination(){
 			$dest = Symphony::Configuration()->get('export-location', 'static-site-exporter');
 			
-			if(empty($dest)) return MANIFEST . '/tmp';
+			if(empty($dest)){
+				return MANIFEST . '/tmp';
+			}
+			else {
+				return DOCROOT . '/' . Symphony::Configuration()->get('export-location', 'static-site-exporter');
+			} 
 			
 			return $dest;
 		}
