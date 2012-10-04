@@ -59,7 +59,7 @@
 				
 			$li = new XMLElement('li');
 			$label = Widget::Label('Index File Name');
-			$label->appendChild(Widget::Input('settings[static-site-exporter][index-file-name]', General::Sanitize($context['parent']->Configuration->get('index-file-name', 'static-site-exporter'))));		
+			$label->appendChild(Widget::Input('settings[static-site-exporter][index-file-name]', General::Sanitize(Administration::Configuration->get('index-file-name', 'static-site-exporter'))));		
 			$li->appendChild($label);	
 						
 			$ul->appendChild($li);	
@@ -68,7 +68,7 @@
 			
 			$label = Widget::Label('Export Location');
 			$label->appendChild(new XMLElement('i', 'Optional'));
-			$label->appendChild(Widget::Input('settings[static-site-exporter][export-location]', General::Sanitize($context['parent']->Configuration->get('export-location', 'static-site-exporter'))));		
+			$label->appendChild(Widget::Input('settings[static-site-exporter][export-location]', General::Sanitize(Administration::Configuration->get('export-location', 'static-site-exporter'))));		
 			$li->appendChild($label);
 			$li->appendChild(new XMLElement('p', 'Leave blank for default.', array('class' => 'help', 'title' => EXTENSIONS.'/static_site_exporter/exports/')));	
 				
@@ -79,7 +79,7 @@
 			$ul = new XMLElement('ul');
 			$ul->setAttribute('class', 'group');
 
-			$force_include = preg_replace('/,/i', "\r\n", $context['parent']->Configuration->get('force-include', 'static-site-exporter'));
+			$force_include = preg_replace('/,/i', "\r\n", Administration::Configuration->get('force-include', 'static-site-exporter'));
 
 			$li = new XMLElement('li');	
 			$label = Widget::Label('Force Include');
