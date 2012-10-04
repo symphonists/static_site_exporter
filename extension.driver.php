@@ -4,16 +4,6 @@
 
 	Class extension_static_site_exporter extends Extension{
 		
-		public function about(){
-			return array('name' => 'Static Site Exporter',
-						 'version' => '1.2',
-						 'release-date' => '2010-06-19',
-						 'author' => array('name' => 'Alistair Kearney, Nick Dunn',
-										   'website' => 'http://nick-dunn.co.uk'
-										)
-				 		);
-		}
-		
 		public function fetchNavigation(){
 			return array(
 				array(
@@ -190,7 +180,7 @@
 				  `status` int(4) unsigned default '200',
 				  PRIMARY KEY  (`id`),
 				  UNIQUE KEY `url` (`url`)
-				) TYPE=MyISAM
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 			
 			");
 		}

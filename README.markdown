@@ -1,9 +1,9 @@
 # Static Site Exporter
 
-- Version: 0.3
+- Version: 0.4
 - Author: Symphony Team, Nick Dunn
 - Build Date: 2010-12-21
-- Requirements: Symphony 2.1.0
+- Requirements: Symphony 2.3
 
 ## Description
 

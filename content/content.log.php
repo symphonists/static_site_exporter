@@ -5,8 +5,8 @@
 
 	Class contentExtensionStatic_Site_ExporterLog extends AdministrationPage{
 
-		function __construct(&$parent){
-			parent::__construct($parent);
+		function __construct(){
+			parent::__construct();
 			$this->setPageType('form');			
 			$this->setTitle('Symphony &ndash; Site Exporter &ndash; Crawl Log');
 		}
@@ -39,7 +39,7 @@
 			$Page->addHeaderToPage('Content-Type', 'text/html; charset=UTF-8');
 			$Page->setTitle('Symphony &ndash; Site Exporter &ndash; Crawl Log');			
 			
-			$exporter = Administration::instance()->ExtensionManager->create('static_site_exporter');
+			$exporter = ExtensionManager::create('static_site_exporter');
 			
 			$links = $exporter->fetchLinks();	
 
