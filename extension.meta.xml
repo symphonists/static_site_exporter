@@ -2,11 +2,14 @@
 <extension id="static_site_exporter" status="experimental" xmlns="http://symphony-cms.com/schemas/extension/1.0">
 	<name>Static Site Exporter</name>
 	<description>Export a Symphony site to flat HTML pages.</description>
-	<repo type="github">https://github.com/nickdunn/static_site_exporter</repo>
+	<repo type="github">https://github.com/symphonists/static_site_exporter</repo>
 	<types>
 		<type>Workflow</type>
 	</types>
 	<authors>
+		<author>
+          		<name github="symphonists" symphony="community">Symphony Community</name>
+    		</author>
 		<author>
 			<name github="nickdunn" symphony="nickdunn">Nick Dunn</name>
 			<website>http://nick-dunn.co.uk</website>
