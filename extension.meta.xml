@@ -20,6 +20,9 @@
 		</author>
 	</authors>
 	<releases>
-		<release version="0.3" date="2010-12-21" min="2.1.0"/>
+		<release version="0.4" date="2010-12-21" min="2.3">
+			- Updated to work with Symphony 2.3
+		</release>
+		<release version="0.3" date="2010-12-21" min="2.1.0" max="2.2.5"/>
 	</releases>
 </extension>

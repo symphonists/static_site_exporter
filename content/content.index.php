@@ -5,8 +5,8 @@
 
 	Class contentExtensionStatic_Site_ExporterIndex extends AdministrationPage{
 
-		function __construct(&$parent){
-			parent::__construct($parent);
+		function __construct(){
+			parent::__construct();
 			$this->setPageType('form');
 			$this->setTitle('Symphony &ndash; Static Site Exporter');
 		}
@@ -17,7 +17,7 @@
 				Crawler::unlock(true);
 			}
 			
-			$exporter = Administration::instance()->ExtensionManager->create('static_site_exporter');
+			$exporter = ExtensionManager::create('static_site_exporter');
 			
 			Administration::instance()->Page->addScriptToHead(URL . '/extensions/static_site_exporter/assets/getstatus.js', 80);
 			
@@ -127,7 +127,7 @@
 				
 			} else{
 				
-				$exporter = Administration::instance()->ExtensionManager->create('static_site_exporter');
+				$exporter = ExtensionManager::create('static_site_exporter');
 				
 				if(isset($_POST['action']['try-crawl'])){
 					

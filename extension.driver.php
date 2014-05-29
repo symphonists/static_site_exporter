@@ -4,16 +4,6 @@
 
 	Class extension_static_site_exporter extends Extension{
 		
-		public function about(){
-			return array('name' => 'Static Site Exporter',
-						 'version' => '1.2',
-						 'release-date' => '2010-06-19',
-						 'author' => array('name' => 'Alistair Kearney, Nick Dunn',
-										   'website' => 'http://nick-dunn.co.uk'
-										)
-				 		);
-		}
-		
 		public function fetchNavigation(){
 			return array(
 				array(
@@ -69,7 +59,7 @@
 				
 			$li = new XMLElement('li');
 			$label = Widget::Label('Index File Name');
-			$label->appendChild(Widget::Input('settings[static-site-exporter][index-file-name]', General::Sanitize($context['parent']->Configuration->get('index-file-name', 'static-site-exporter'))));		
+			$label->appendChild(Widget::Input('settings[static-site-exporter][index-file-name]', General::Sanitize(Administration::Configuration()->get('index-file-name', 'static-site-exporter'))));		
 			$li->appendChild($label);	
 						
 			$ul->appendChild($li);	
@@ -78,7 +68,7 @@
 			
 			$label = Widget::Label('Export Location');
 			$label->appendChild(new XMLElement('i', 'Optional'));
-			$label->appendChild(Widget::Input('settings[static-site-exporter][export-location]', General::Sanitize($context['parent']->Configuration->get('export-location', 'static-site-exporter'))));		
+			$label->appendChild(Widget::Input('settings[static-site-exporter][export-location]', General::Sanitize(Administration::Configuration()->get('export-location', 'static-site-exporter'))));		
 			$li->appendChild($label);
 			$li->appendChild(new XMLElement('p', 'Leave blank for default.', array('class' => 'help', 'title' => EXTENSIONS.'/static_site_exporter/exports/')));	
 				
@@ -89,7 +79,7 @@
 			$ul = new XMLElement('ul');
 			$ul->setAttribute('class', 'group');
 
-			$force_include = preg_replace('/,/i', "\r\n", $context['parent']->Configuration->get('force-include', 'static-site-exporter'));
+			$force_include = preg_replace('/,/i', "\r\n", Administration::Configuration()->get('force-include', 'static-site-exporter'));
 
 			$li = new XMLElement('li');	
 			$label = Widget::Label('Force Include');
@@ -133,7 +123,12 @@
 		public function exportDestination(){
 			$dest = Symphony::Configuration()->get('export-location', 'static-site-exporter');
 			
-			if(empty($dest)) return MANIFEST . '/tmp';
+			if(empty($dest)){
+				return MANIFEST . '/tmp';
+			}
+			else {
+				return DOCROOT . '/' . Symphony::Configuration()->get('export-location', 'static-site-exporter');
+			} 
 			
 			return $dest;
 		}
@@ -190,7 +185,7 @@
 				  `status` int(4) unsigned default '200',
 				  PRIMARY KEY  (`id`),
 				  UNIQUE KEY `url` (`url`)
-				) TYPE=MyISAM
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 			
 			");
 		}
