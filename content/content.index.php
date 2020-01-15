@@ -96,7 +96,9 @@
 				
 					$ul = new XMLElement('ul');
 					
-					$li = new XMLElement('li', '<strong>Last crawl performed:</strong> ' . DateTimeObj::getTimeAgo($last_index));
+					// $li = new XMLElement('li', '<strong>Last crawl performed:</strong> ' . DateTimeObj::getTimeAgo($last_index));
+					// var_dump(date("Y-m-d h:ia", $last_index));exit;
+					$li = new XMLElement('li', '<strong>Last crawl performed:</strong> ' . Widget::Time(date("Y-m-d h:ia", $last_index))->generate());
 					$li->setAttribute('title', DateTimeObj::get('M d, Y \a\t h:i a', $last_index));
 					$ul->appendChild($li);
 					
@@ -119,31 +121,29 @@
 
 		}
 		
-		function action(){
-			
-			if(Crawler::isCrawling()) {
-				
+		function action() {
+			if (Crawler::isCrawling()) {
 				$this->pageAlert('Crawling is already in progress. You will need to wait until it is complete.', Alert::ERROR);
-				
-			} else{
+			}
+			else {
 				
 				$exporter = ExtensionManager::create('static_site_exporter');
 				
-				if(isset($_POST['action']['try-crawl'])){
-					
-					$author = Administration::instance()->Author;
+				if(isset($_POST['action']['try-crawl'])) {
+					// $author = Administration::instance()->Author;
+					$author = Symphony::Author();
 					
 					## Temporarily toggle auth token on
 					if($author->get('auth_token_active') == 'no'){
 						require_once(TOOLKIT . '/class.authormanager.php');
 						$AuthorManager = new AuthorManager(Administration::instance());
 						$author = $AuthorManager->fetchByID($author->get('id'));						
-						
+
 						$token_toggled = true;
 						$author->set('auth_token_active', 'yes');
 						$author->commit();
 					}
-					
+					// var_dump($author->get('auth_token_active')); exit;
 					include_once(TOOLKIT . '/class.gateway.php');
 		            $ch = new Gateway;
 
@@ -151,7 +151,7 @@
 					$ch->setopt('TIMEOUT', 1);
 		            $ch->setopt('URL', URL . '/symphony' . getCurrentPage() . '?action[crawl]=true&auth-token=' . $author->createAuthToken());
 		            $ch->exec();
-					
+
 					if($token_toggled){
 						$author->set('auth_token_active', 'no');
 						$author->commit();
@@ -159,34 +159,24 @@
 						unset($AuthorManager);
 					}
 					
-					redirect(URL . '/symphony/extension/static_site_exporter/');
-					
+					redirect(URL . '/symphony/extension/static_site_exporter/');					
 				}
-				
-				elseif(isset($_REQUEST['action']['crawl'])){ 
-					
+				elseif (isset($_REQUEST['action']['crawl'])) {
 					Crawler::lock();
 					Symphony::Database()->query("TRUNCATE TABLE `" . Crawler::TABLE . "`");
 					Crawler::crawl('/');
 					Crawler::unlock(true);
-					
+
 					Symphony::Configuration()->set('average-links', $exporter->totalLinks(), 'static-site-exporter');
 					Symphony::Configuration()->set('average-time', $exporter->averageTime(), 'static-site-exporter');
-					Administration::instance()->saveConfig();
-
+					Symphony::Configuration()->write();
 				}
-			
 				elseif(isset($_POST['action']['export'])){
-					
 					$force_includes = preg_split('/,/', Symphony::Configuration()->get('force-include', 'static-site-exporter'), -1, PREG_SPLIT_NO_EMPTY);
 					
 					Crawler::export(Symphony::Configuration()->get('static-site-exporter'), $exporter->exportDestination() . '/' . DateTimeObj::get('Ymd-Hi') . '.zip', $force_includes);
-
 				}
-			
 			}
 		}
-		
 	}
-	
 ?>

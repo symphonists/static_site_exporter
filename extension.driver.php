@@ -168,11 +168,9 @@
 		}
 		
 		public function install(){
-			
 			Symphony::Configuration()->set('include-404', 'no', 'static-site-exporter');
 			Symphony::Configuration()->set('index-file-name', 'index.html', 'static-site-exporter');
-					
-			Administration::instance()->saveConfig();
+			Symphony::Configuration()->write();
 			
 			return Symphony::Database()->query("
 			
@@ -181,7 +179,7 @@
 				  `url` varchar(255) NOT NULL,
 				  `last_indexed` datetime default NULL,
 				  `time_to_index` float default NULL,
-				  `contents` text,
+				  `contents` longtext,
 				  `status` int(4) unsigned default '200',
 				  PRIMARY KEY  (`id`),
 				  UNIQUE KEY `url` (`url`)
@@ -192,7 +190,7 @@
 		
 		public function uninstall(){
 			Symphony::Configuration()->remove('static-site-exporter');			
-			Administration::instance()->saveConfig();
+			Symphony::Configuration()->write();
 						
 			return Symphony::Database()->query('DROP TABLE `'.Crawler::TABLE.'`');			
 		}

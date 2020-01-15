@@ -70,6 +70,8 @@
 			if(file_exists(EXTENSIONS . '/static_site_exporter/lib/inc.string_replace_pairs.php')) 
 				include(EXTENSIONS . '/static_site_exporter/lib/inc.string_replace_pairs.php');
 			
+			// echo '<pre>'; var_dump($result); exit;
+
 			foreach($result as $id){
 				$row = Symphony::Database()->fetchRow(0, "SELECT * FROM `".self::TABLE."` WHERE `id` = '$id' LIMIT 1");
 				
@@ -77,22 +79,26 @@
 					$row['contents'] = str_replace(array_keys($pairs), array_values($pairs), $row['contents']);				
 				}
 				
+				$contents = urldecode($row['contents']);
+
 				// if(is_array($ssi_includes) && !empty($ssi_includes)){
 				// 	foreach($ssi_includes as $key => $val){
 				// 		self::__processCustomPairReplacement($row['contents'], $key, $val);
 				// 	}				
 				// }
-				
+
 				if(preg_match('/\/[^.\/]+\.[^\/]+$/i', $row['url'])){
-					$archive->addFromString($row['contents'], $row['url']);
+					// $archive->addFromString($row['contents'], $row['url']);
+					$archive->addFromString($contents, $row['url']);
 				}
-				
-				elseif(preg_match('/rss/i', $row['url'])){
-					$archive->addFromString($row['contents'], $row['url'] . '/index.xml');
+				elseif (preg_match('/rss/i', $row['url'])) {
+					// $archive->addFromString($row['contents'], $row['url'] . '/index.xml');
+					$archive->addFromString($contents, $row['url'] . '/index.xml');
 				}
-				
-				else $archive->addFromString($row['contents'], $row['url'] . '/' . $config['index-file-name']);
-			 				
+				else {
+					// $archive->addFromString($row['contents'], $row['url'] . '/' . $config['index-file-name']);
+					$archive->addFromString($contents, $row['url'] . '/' . $config['index-file-name']);
+				}		
 			}
 
 			if(is_array($force_includes) && !empty($force_includes)){
@@ -123,8 +129,7 @@
 			return $matches[1];
 		}
 		
-		public static function crawl($seed, array $ignore=array()){
-			
+		public static function crawl($seed, array $ignore=array()){			
 			Symphony::Database()->flush();
 			Symphony::Database()->flushLog();
 			
@@ -136,14 +141,16 @@
 			
 			if($status != 404 && self::isPageContainsError($self_page_contents[0])) $status = '999';
 
-			$contents = mysql_real_escape_string($self_page_contents[1]);
+			// $contents = MySQL::cleanValue($self_page_contents[1]);
+			$contents = urlencode($self_page_contents[1]);
 
-			$time = precision_timer('STOP', $start);
+			$time = precision_timer('stop', $start);
 
 			$sql = "INSERT INTO `".self::TABLE."` 
 			 		VALUES (NULL, '$seed', NOW(), '$time', '$contents', '$status') 
 			 		ON DUPLICATE KEY UPDATE `time_to_index` = '$time', `last_indexed` = NOW(), `contents` = '$contents', `status` = '$status'";
 
+			Symphony::Database()->query('SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci');
 			Symphony::Database()->query($sql);
 			
 			$self_page_links = self::parseForLinks($self_page_contents[1], $ignore);
